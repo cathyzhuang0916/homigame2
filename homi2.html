@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HOMI 烤羊派对破冰游戏</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .instructions {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .cell {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 120px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .cell.done {
+      background: #ffd6e8;
+    }
+    .question {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .name-input {
+      width: 100%;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>HOMI 烤羊派对破冰游戏</h1>
+
+    <div class="instructions">
+      <p><strong>玩法说明：</strong></p>
+      <ol>
+        <li>微信扫码进入本页面参与破冰游戏。</li>
+        <li>根据每个格子的描述，找到符合条件的人。</li>
+        <li>在格子中填写<strong>对方名字</strong>（名字不可重复）。</li>
+        <li>每填写完成一个格子，该格子会自动变成粉色。</li>
+        <li>本页面可直接<strong>打印或导出为 PDF</strong>，方便在微信群中转发。</li>
+      </ol>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="footer">适用于团队破冰 / 培训 / All Hands 活动</div>
+  </div>
+
+  <script>
+    const questions = [
+      "找一个和你穿同颜色衣服的异性",
+"会2种以上乐器的人",
+"去过4个以上国家",
+"你觉得好看的异性",
+"同MBTI的人",
+"会三种语言的人",
+"有相同兴趣爱好的人",
+"蹦极跳伞过的人",
+"会做饭的人",
+"养宠物的人",
+"喜欢甜食的人",
+"最近一年旅行过",
+"看过100部电影",
+"不会游泳的人",
+"参加过3次以上群活动的人",
+"上过电视的人",
+"同星座的人",
+"有两个以上兄弟姐妹",
+"会唱歌的人",
+"比你高的异性"
+    ];
+
+    const grid = document.getElementById('grid');
+    const usedNames = new Set();
+
+    questions.forEach((q, index) => {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+
+      const question = document.createElement('div');
+      question.className = 'question';
+      question.textContent = q;
+
+      const input = document.createElement('input');
+      input.className = 'name-input';
+      input.placeholder = '填写名字';
+
+      input.addEventListener('change', () => {
+        const name = input.value.trim();
+
+        // 如果清空名字
+        if (!name) {
+          cell.classList.remove('done');
+          return;
+        }
+
+        // 名字重复校验
+        if (usedNames.has(name)) {
+          alert('这个名字已经被使用过啦，请换一个 😊');
+          input.value = '';
+          return;
+        }
+
+        // 记录名字
+        usedNames.add(name);
+        cell.classList.add('done');
+      });
+
+      cell.appendChild(question);
+      cell.appendChild(input);
+      grid.appendChild(cell);
+    });
+  </script>
+</body>
+</html>
+
